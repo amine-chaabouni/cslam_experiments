@@ -5,6 +5,9 @@ install(DIRECTORY
    config
    data
    launch
+   models
+   # rviz
+   worlds
    DESTINATION share/${PROJECT_NAME}/
 )
 
@@ -24,6 +27,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS 
 cslam_experiments/publish_stereo_calibration_s3e.py 
+cslam_experiments/remapper.py 
 DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
