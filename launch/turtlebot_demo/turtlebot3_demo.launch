@@ -85,8 +85,8 @@ def launch_remapper(context, *args, **kwargs):
     
     for i in range(NB_ROBOTS):
         launched_nodes.append(Node(
-            package='my_webots',
-            executable='remapper',
+            package='cslam_experiments',
+            executable='rremapper.py',
             name=f'remapper_for_r{i}',
             # parameters=[LaunchConfiguration('config')],
             remappings=[

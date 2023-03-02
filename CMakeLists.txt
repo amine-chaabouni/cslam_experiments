@@ -11,6 +11,7 @@ install(DIRECTORY
    DESTINATION share/${PROJECT_NAME}/
 )
 
+find_package(rclpy REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 
@@ -20,6 +21,7 @@ find_package(cslam_common_interfaces REQUIRED)
 
 find_package(launch_testing_ament_cmake REQUIRED)
 
+find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 
 # Install Python modules
