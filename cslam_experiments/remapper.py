@@ -6,6 +6,7 @@ from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from laser_geometry.laser_geometry import LaserProjection
 
+
 class Remapper(Node):
     def __init__(self):
         super().__init__("remapper_odom")
@@ -25,33 +26,30 @@ class Remapper(Node):
             Subscriber(self, CameraInfo, "/camera/depth/camera_info"),
             # Subscriber(self, PointCloud2, "/camera/depth/points"),
             Subscriber(self, Odometry, "/odom_in")
-            ],
+        ],
             100,
             0.1
         )
         tss_rgbd.registerCallback(self._callback_rgbd)
 
-        tss = ApproximateTimeSynchronizer([
-           Subscriber(self, LaserScan, "/scan_in"),
-           Subscriber(self, Odometry, "/odom_in")
-           ],
-           100,
-           0.1
-        )
+        # tss = ApproximateTimeSynchronizer([
+        #     Subscriber(self, LaserScan, "/scan_in"),
+        #     Subscriber(self, Odometry, "/odom_in")
+        # ],
+        #     100,
+        #     0.1
+        # )
 
         tss = ApproximateTimeSynchronizer([
             Subscriber(self, PointCloud2, "/scan_in"),
             Subscriber(self, Odometry, "/odom_in")
-            ],
+        ],
             100,
             0.1
         )
         tss.registerCallback(self._callback_lidar)
 
-        
-
-        self.projector = LaserProjection(self)
-
+        # self.projector = LaserProjection()
 
     def _callback_lidar(self, ls_msg, odom_msg):
         # pc_msg = self.projector.projectLaser(ls_msg)
@@ -68,10 +66,7 @@ class Remapper(Node):
         self._pub_depth_info.publish(depth_info)
 
 
-
-
 if __name__ == '__main__':
-
     rclpy.init()
     remapper = Remapper()
     remapper.get_logger().info("Initialization Done.")

@@ -64,13 +64,13 @@ def launch_turtlebot(context, *args, **kwargs):
 
     for i in range(NB_ROBOTS):
         launched_nodes.append(Node(
-            package='nav2_gazebo_spawner',
-            executable='nav2_gazebo_spawner',
+            package='gazebo_ros',
+            executable='spawn_entity.py',
             name=f'gazebo_spawner_{i}',
             arguments=[
-                '--robot_name', PythonExpression(expression=[LaunchConfiguration('robot_name'), "+ '" ,f"{i}" + "'"]),
-                '--robot_namespace', PythonExpression(expression=[LaunchConfiguration('robot_namespace'), "+ '" ,f"{i}" + "'"]),
-                '-s', LaunchConfiguration('turtlebot3_model_path'),
+                '-entity', PythonExpression(expression=[LaunchConfiguration('robot_name'), "+ '" ,f"{i}" + "'"]),
+                '-robot_namespace', PythonExpression(expression=[LaunchConfiguration('robot_namespace'), "+ '" ,f"{i}" + "'"]),
+                '-file', LaunchConfiguration('turtlebot3_model_path'),
                 '-x', LaunchConfiguration(f'x{i}'),
                 '-y', LaunchConfiguration(f'y{i}'),
             ]
@@ -86,7 +86,7 @@ def launch_remapper(context, *args, **kwargs):
     for i in range(NB_ROBOTS):
         launched_nodes.append(Node(
             package='cslam_experiments',
-            executable='rremapper.py',
+            executable='remapper.py',
             name=f'remapper_for_r{i}',
             # parameters=[LaunchConfiguration('config')],
             remappings=[
