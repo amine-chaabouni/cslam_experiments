@@ -11,95 +11,95 @@ from launch_ros.actions import Node
 TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 NB_ROBOTS = int(os.environ['NB_ROBOTS'])
 
+
 def launch_cslam(context, *args, **kwargs):
     launched_nodes = []
     for i in range(NB_ROBOTS):
-        namespace = PythonExpression(expression=[LaunchConfiguration('namespace'), "+ '" ,f"{i}" + "'"])
-        if i == 1:
+        namespace = PythonExpression(expression=[LaunchConfiguration('namespace'), "+ '", f"{i}" + "'"])
+        if i == 0:
             launched_nodes.append(Node(package='cslam',
-                                    executable='loop_closure_detection_node.py',
-                                    name=f'cslam_loop_closure_detection',
-                                    parameters=[
-                                        LaunchConfiguration('config_lidar'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                        }
-                                    ],
-                                    namespace=namespace))
-
-        
-            launched_nodes.append(Node(package='cslam',
-                                    executable='lidar_handler_node.py',
-                                    name=f'cslam_map_manager',
-                                    parameters=[
-                                        LaunchConfiguration('config_lidar'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                        }
-                                    ],
-                                    prefix=LaunchConfiguration('launch_prefix_cslam'),
-                                    namespace=namespace))
+                                       executable='loop_closure_detection_node.py',
+                                       name=f'cslam_loop_closure_detection',
+                                       parameters=[
+                                           LaunchConfiguration('config_lidar'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                           }
+                                       ],
+                                       namespace=namespace))
 
             launched_nodes.append(Node(package='cslam',
-                                        executable='pose_graph_manager',
-                                        name=f'cslam_pose_graph_manager',
-                                        parameters=[
-                                            LaunchConfiguration('config_lidar'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                            "evaluation.enable_simulated_rendezvous": LaunchConfiguration('enable_simulated_rendezvous'),
-                                            "evaluation.rendezvous_schedule_file": LaunchConfiguration('rendezvous_schedule_file'),
-                                        }
-                                    ],
-                                    prefix=LaunchConfiguration('launch_prefix_cslam'),
-                                    namespace=namespace))
+                                       executable='lidar_handler_node.py',
+                                       name=f'cslam_map_manager',
+                                       parameters=[
+                                           LaunchConfiguration('config_lidar'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                           }
+                                       ],
+                                       prefix=LaunchConfiguration('launch_prefix_cslam'),
+                                       namespace=namespace))
+
+            launched_nodes.append(Node(package='cslam',
+                                       executable='pose_graph_manager',
+                                       name=f'cslam_pose_graph_manager',
+                                       parameters=[
+                                           LaunchConfiguration('config_lidar'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                               "evaluation.enable_simulated_rendezvous": LaunchConfiguration('enable_simulated_rendezvous'),
+                                               "evaluation.rendezvous_schedule_file": LaunchConfiguration('rendezvous_schedule_file'),
+                                           }
+                                       ],
+                                       prefix=LaunchConfiguration('launch_prefix_cslam'),
+                                       namespace=namespace))
 
         else:
             launched_nodes.append(Node(package='cslam',
-                                    executable='loop_closure_detection_node.py',
-                                    name=f'cslam_loop_closure_detection',
-                                    parameters=[
-                                        LaunchConfiguration('config_rgbd'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                        }
-                                    ],
-                                    namespace=namespace))
+                                       executable='loop_closure_detection_node.py',
+                                       name=f'cslam_loop_closure_detection',
+                                       parameters=[
+                                           LaunchConfiguration('config_rgbd'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                           }
+                                       ],
+                                       namespace=namespace))
 
             launched_nodes.append(Node(package='cslam',
-                                    executable='map_manager',
-                                    name='cslam_map_manager',
-                                    parameters=[
-                                        LaunchConfiguration('config_rgbd'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                        }
-                                    ],
-                                    prefix=LaunchConfiguration('launch_prefix_cslam'),
-                                    namespace=namespace))
-            
-            launched_nodes.append(Node(package='cslam',
-                                        executable='pose_graph_manager',
-                                        name=f'cslam_pose_graph_manager',
-                                        parameters=[
-                                            LaunchConfiguration('config_rgbd'), {
-                                            "robot_id": i,
-                                            "max_nb_robots":
-                                            LaunchConfiguration('max_nb_robots'),
-                                            "evaluation.enable_simulated_rendezvous": LaunchConfiguration('enable_simulated_rendezvous'),
-                                            "evaluation.rendezvous_schedule_file": LaunchConfiguration('rendezvous_schedule_file'),
-                                        }
-                                    ],
-                                    prefix=LaunchConfiguration('launch_prefix_cslam'),
-                                    namespace=namespace))
+                                       executable='map_manager',
+                                       name='cslam_map_manager',
+                                       parameters=[
+                                           LaunchConfiguration('config_rgbd'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                           }
+                                       ],
+                                       prefix=LaunchConfiguration('launch_prefix_cslam'),
+                                       namespace=namespace))
 
+            launched_nodes.append(Node(package='cslam',
+                                       executable='pose_graph_manager',
+                                       name=f'cslam_pose_graph_manager',
+                                       parameters=[
+                                           LaunchConfiguration('config_rgbd'), {
+                                               "robot_id": i,
+                                               "max_nb_robots":
+                                                   LaunchConfiguration('max_nb_robots'),
+                                               "evaluation.enable_simulated_rendezvous": LaunchConfiguration('enable_simulated_rendezvous'),
+                                               "evaluation.rendezvous_schedule_file": LaunchConfiguration('rendezvous_schedule_file'),
+                                           }
+                                       ],
+                                       prefix=LaunchConfiguration('launch_prefix_cslam'),
+                                       namespace=namespace))
 
     return launched_nodes
+
 
 #  ros2 run nav2_gazebo_spawner nav2_gazebo_spawner --robot_namespace turtlebot3_0 --robot_name waffle_0 --turtlebot_type waffle -x 2 -y 0.5
 
@@ -108,13 +108,13 @@ def launch_turtlebot(context, *args, **kwargs):
 
     for i in range(NB_ROBOTS):
         launched_nodes.append(Node(
-            package='nav2_gazebo_spawner',
-            executable='nav2_gazebo_spawner',
+            package='gazebo_ros',
+            executable='spawn_entity.py',
             name=f'gazebo_spawner_{i}',
             arguments=[
-                '--robot_name', PythonExpression(expression=[LaunchConfiguration('robot_name'), "+ '" ,f"{i}" + "'"]),
-                '--robot_namespace', PythonExpression(expression=[LaunchConfiguration('robot_namespace'), "+ '" ,f"{i}" + "'"]),
-                '-s', LaunchConfiguration('turtlebot3_model_path'),
+                '-entity', PythonExpression(expression=[LaunchConfiguration('robot_name'), "+ '", f"{i}" + "'"]),
+                '-robot_namespace', PythonExpression(expression=[LaunchConfiguration('robot_namespace'), "+ '", f"{i}" + "'"]),
+                '-file', LaunchConfiguration('turtlebot3_model_path'),
                 '-x', LaunchConfiguration(f'x{i}'),
                 '-y', LaunchConfiguration(f'y{i}'),
             ]
@@ -122,11 +122,12 @@ def launch_turtlebot(context, *args, **kwargs):
 
     return launched_nodes
 
+
 def launch_remapper(context, *args, **kwargs):
     conf_cslam_robot_id = LaunchConfiguration('namespace')
     conf_real_robot_id = LaunchConfiguration('robot_namespace')
     launched_nodes = []
-    
+
     for i in range(NB_ROBOTS):
         launched_nodes.append(Node(
             package='cslam_experiments',
@@ -134,19 +135,26 @@ def launch_remapper(context, *args, **kwargs):
             name=f'remapper_for_r{i}',
             # parameters=[LaunchConfiguration('config')],
             remappings=[
-                ("/odom_out", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+" ,"'/odom'"])),
-                ("/pointcloud_out", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+","'/pointcloud'"])),
-                ("/odom_in", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/odom'", " if ", conf_real_robot_id, " != 'nan' ", " else ", "'/odom'"])),
-                ("/scan_in", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/scan'", " if ", conf_real_robot_id, " != 'nan' ", " else ", "'/scan'"])),
-                
-                ("/color/image_raw", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+" ,"'/color/image_raw'"])),
-                ("/aligned_depth_to_color/image_raw", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+" ,"'/aligned_depth_to_color/image_raw'"])),
-                ("/color/camera_info", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+" ,"'/color/camera_info'"])),
-                ("/aligned_depth_to_color/camera_info", PythonExpression(expression=[conf_cslam_robot_id, "+ '" ,f"{i}" + "'+" ,"'/aligned_depth_to_color/camera_info'"])),
-                ("/camera/color/image_raw", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/camera/image_raw'"])),
-                ("/camera/color/camera_info", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/camera/camera_info'"])),
-                ("/camera/depth/image_raw", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/camera/depth/image_raw'"])),
-                ("/camera/depth/camera_info", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '" ,f"{i}" + "'+" ,"'/camera/depth/camera_info'"])),
+                ("/odom_out", PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/odom'"])),
+                ("/pointcloud_out", PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/pointcloud'"])),
+                ("/odom_in", PythonExpression(
+                    expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/odom'", " if ", conf_real_robot_id, " != 'nan' ", " else ",
+                                "'/odom'"])),
+                ("/scan_in", PythonExpression(
+                    expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/scan'", " if ", conf_real_robot_id, " != 'nan' ", " else ",
+                                "'/scan'"])),
+
+                ("/color/image_raw", PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/color/image_raw'"])),
+                ("/aligned_depth_to_color/image_raw",
+                 PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/aligned_depth_to_color/image_raw'"])),
+                ("/color/camera_info", PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/color/camera_info'"])),
+                ("/aligned_depth_to_color/camera_info",
+                 PythonExpression(expression=[conf_cslam_robot_id, "+ '", f"{i}" + "'+", "'/aligned_depth_to_color/camera_info'"])),
+                ("/camera/color/image_raw", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/camera/image_raw'"])),
+                ("/camera/color/camera_info", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/camera/camera_info'"])),
+                ("/camera/depth/image_raw", PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/camera/depth/image_raw'"])),
+                ("/camera/depth/camera_info",
+                 PythonExpression(expression=["'/'", "+", conf_real_robot_id, "+ '", f"{i}" + "'+", "'/camera/depth/camera_info'"])),
             ],
         ))
 
@@ -154,11 +162,11 @@ def launch_remapper(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    turtlebot_file_name = 'turtlebot3_' + TURTLEBOT3_MODEL+ '/model.sdf'
+    turtlebot_file_name = 'turtlebot3_' + TURTLEBOT3_MODEL + '/model.sdf'
     turtlebot_model = os.path.join(get_package_share_directory('cslam_experiments'),
-                         'models', turtlebot_file_name)
+                                   'models', turtlebot_file_name)
 
-    turtlebot_positions=[]
+    turtlebot_positions = []
     # {-2, 0.5}, {-6, -0.5}
     for i in range(NB_ROBOTS):
         turtlebot_positions.append(DeclareLaunchArgument(f'x{i}', default_value='-2', description=''))
@@ -169,7 +177,7 @@ def generate_launch_description():
         DeclareLaunchArgument('namespace', default_value="'/r'", description=''),
         DeclareLaunchArgument('robot_id', default_value='0', description=''),
         DeclareLaunchArgument('max_nb_robots', default_value=f"{NB_ROBOTS}", description=''),
-        DeclareLaunchArgument('config_path', default_value=os.path.join( get_package_share_directory('cslam_experiments'), 'config/'),
+        DeclareLaunchArgument('config_path', default_value=os.path.join(get_package_share_directory('cslam_experiments'), 'config/'),
                               description=''),
         DeclareLaunchArgument('config_lidar_file', default_value='kitti_lidar.yaml', description=''),
         DeclareLaunchArgument('config_rgbd_file', default_value='realsense_rgbd.yaml', description=''),
@@ -207,7 +215,6 @@ def generate_launch_description():
         DeclareLaunchArgument('robot_namespace', default_value="'turtlebot3_'", description=''),
         DeclareLaunchArgument('robot_name', default_value="'waffle_'", description=''),
         DeclareLaunchArgument('turtlebot3_model_path', default_value=f"{turtlebot_model}", description=''),
-        
 
         OpaqueFunction(function=launch_turtlebot),
 
