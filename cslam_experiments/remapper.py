@@ -19,12 +19,11 @@ class Remapper(Node):
         self._pub_color_info = self.create_publisher(CameraInfo, "/color/camera_info", 10)
         self._pub_depth_info = self.create_publisher(CameraInfo, "/aligned_depth_to_color/camera_info", 10)
 
+        self.create_subscription(CameraInfo, "/camera/color/camera_info", self._camera_info_callback, 1)
+
         tss_rgbd = ApproximateTimeSynchronizer([
             Subscriber(self, Image, "/camera/color/image_raw"),
             Subscriber(self, Image, "/camera/depth/image_raw"),
-            Subscriber(self, CameraInfo, "/camera/color/camera_info"),
-            Subscriber(self, CameraInfo, "/camera/depth/camera_info"),
-            # Subscriber(self, PointCloud2, "/camera/depth/points"),
             Subscriber(self, Odometry, "/odom_in")
         ],
             100,
@@ -58,12 +57,17 @@ class Remapper(Node):
         self._pub_odom.publish(odom_msg)
         self._pub_pointcloud.publish(pc_msg)
 
-    def _callback_rgbd(self, color_image, depth_image, color_info, depth_info, odom_msg):
-        self._pub_odom.publish(odom_msg)
-        self._pub_color_image.publish(color_image)
-        self._pub_depth_image.publish(depth_image)
-        self._pub_color_info.publish(color_info)
-        self._pub_depth_info.publish(depth_info)
+    def _camera_info_callback(self, camera_info):
+        self.camera_info = camera_info
+
+    def _callback_rgbd(self, color_image, depth_image, odom_msg):
+        if self.camera_info is not None:
+            self.camera_info.header.stamp = color_image.header.stamp
+            self._pub_odom.publish(odom_msg)
+            self._pub_color_image.publish(color_image)
+            self._pub_depth_image.publish(depth_image)
+            self._pub_color_info.publish(self.camera_info)
+            self._pub_depth_info.publish(self.camera_info)
 
 
 if __name__ == '__main__':
